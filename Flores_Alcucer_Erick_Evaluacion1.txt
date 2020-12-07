@@ -1,0 +1,227 @@
+//EJERCICIO 1 CODIGO MORSE
+#include <LiquidCrystal.h>
+
+LiquidCrystal lcd (13,12,11,10,9,8);
+
+ String dato; // variable de recepción de strings
+ int tam;     //tam de caracteres
+ int i=0;     //variable de recorrido
+ String salida; // mensaje codificado
+
+ 
+void setup() {
+  lcd.begin(16,2);
+  Serial.begin(9600);
+  Serial.println("Ingrese el mensaje a codificar:");
+}
+
+void loop() {
+  if(Serial.available()>0){
+      dato=Serial.readString();   // lee el dato
+      dato.toLowerCase();         // coversión a minúsculas
+      tam=dato.length()+1;        
+      char vector [tam];          
+      dato.toCharArray(vector,tam);    
+      Serial.println("");
+      Serial.println("Ingreso correcto..!");
+          for(i=0;i<tam-1;i++){           
+              switch(vector[i]){          
+                  case 'a':
+                  salida=salida+".-";    //codificación
+                  break;
+                  case 'b':
+                  salida=salida+"-...";    //codificación
+                  break;
+                  case 'c':
+                  salida=salida+"-.-.";    //codificación
+                  break;
+                  case 'd':
+                  salida=salida+"-..";    //codificación
+                  break;
+                  case 'e':
+                  salida=salida+".";    //codificación
+                  break;
+                  case 'f':
+                  salida=salida+"..-.";    //codificación
+                  break;
+                  case 'g':
+                  salida=salida+"--.";    //codificación
+                  break;
+                  case 'h':
+                  salida=salida+"....";    //codificación
+                  break;
+                  case 'i':
+                  salida=salida+"..";    //codificación
+                  break;
+                  case 'j':
+                  salida=salida+".---";    //codificación
+                  break;
+                  case 'k':
+                  salida=salida+"-.-";    //codificación
+                  break;
+                  case 'l':
+                  salida=salida+".-..";    //codificación
+                  break;
+                  case 'm':
+                  salida=salida+"--";    //codificación
+                  break;
+                  case 'n':
+                  salida=salida+"-.";    //codificación
+                  break;
+                  case 'o':
+                  salida=salida+"---";    //codificación
+                  break;
+                  case 'p':
+                  salida=salida+".--.";    //codificación
+                  break;
+                  case 'q':
+                  salida=salida+"--.-";    //codificación
+                  break;
+                  case 'r':
+                  salida=salida+".-.";    //codificación
+                  break;
+                  case 's':
+                  salida=salida+"...";    //codificación
+                  break;
+                  case 't':
+                  salida=salida+"-";    //codificación
+                  break;
+                  case 'u':
+                  salida=salida+"..-";    //codificación
+                  break;
+                  case 'v':
+                  salida=salida+"...-";    //codificación
+                  break;
+                  case 'x':
+                  salida=salida+"-..-";    //codificación
+                  break;
+                  case 'y':
+                  salida=salida+"-.--";    //codificación
+                  break;
+                  case 'z':
+                  salida=salida+"--..";    //codificación
+                  break;
+                  case '0':
+                  salida=salida+"-----";    //codificación
+                  break;
+                  case '1':
+                  salida=salida+".----";    //codificación
+                  break;
+                  case '2':
+                  salida=salida+"..---";    //codificación
+                  break;
+                  case '3':
+                  salida=salida+"...--";    //codificación
+                  break;
+                  case '4':
+                  salida=salida+"....-";    //codificación
+                  break;
+                  case '5':
+                  salida=salida+".....";    //codificación
+                  break;
+                  case '6':
+                  salida=salida+"-....";    //codificación
+                  break;
+                  case '7':
+                  salida=salida+"--...";    //codificación
+                  break;
+                  case '8':
+                  salida=salida+"---..";    //codificación
+                  break;
+                  case '9':
+                  salida=salida+"----.";    //codificación
+                  break;
+           }
+       }
+    Serial.println("Codigo: ");   // enviar mensaje codificado
+    Serial.println(salida);
+    lcd.setCursor(0,0);
+    lcd.print(String(salida));  
+   }
+   
+}
+
+
+//EJERCICIO 2 CONTEO REGRESIVO CON INTERRUPCION
+#include <MsTimer2.h>
+#include <LiquidCrystal.h>
+
+LiquidCrystal lcd (13,12,11,10,9,8);
+
+int cont;       // contador
+int conversor;
+int on=0;     //int 0
+
+void setup() {
+  lcd.begin(16,2);  
+  lcd.setCursor(0,0);
+  lcd.print("CONTADOR");
+  lcd.setCursor(0,1);
+  lcd.print("CONT: ");
+  Serial.begin(9600);
+  attachInterrupt(0,activacion,LOW);
+  
+}
+
+void loop() {
+  conversor=analogRead(0);
+  conversor=map(conversor,0,1023,10,20);
+  lcd.setCursor(6,1);
+  lcd.print(conversor);
+  
+}
+
+void activacion(){
+  switch(on){
+    break;
+    case 0:
+      Serial.println("Inicio de conteo");
+      MsTimer2::set(1000,conteo);
+      MsTimer2::start();
+      cont=conversor;
+    break;
+    }
+}
+
+void conteo(){
+  
+  if(cont>=0) {
+      cont=cont-1;
+      Serial.println(cont);  
+      lcd.setCursor(6,1);
+      lcd.print(cont);
+      
+    } 
+}
+
+
+
+//EJERCICIO 3 ORDENAMINETO DE VOCALES
+ String dato; 
+ int tam;     
+ int i=0;     
+ String salida; 
+
+void setup() {
+  Serial.begin(9600);
+}
+
+void loop() {
+  if(Serial.available()>0){
+      dato=Serial.readString();   // lee el dato
+      dato.toLowerCase();         // coversión a minúsculas
+      tam=dato.length()+1;        // tener la cadena sin errores
+      char vector [tam];          // creación de vector
+      dato.toCharArray(vector,tam);    // llenar vector
+      i++;
+        if(vector[i]=='a'|| vector[i]=='e'|| vector[i]=='i'|| vector[i]=='o'|| vector[i]=='u'){
+            Serial.println("");
+            Serial.println("Orenado:");
+            Serial.println(String(dato));
+        }
+        else{
+          
+          }
+  }
+}
+
